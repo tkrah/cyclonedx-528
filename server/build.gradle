@@ -1,0 +1,56 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+	alias(libs.plugins.spring.boot)
+	id 'java'
+	id 'jvm-test-suite'
+	id 'war'
+	alias(libs.plugins.cyclonedx)
+}
+
+configurations {
+	cycloneDxReport
+}
+
+dependencies {
+	implementation platform(SpringBootPlugin.BOM_COORDINATES)
+	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-hateoas")
+	implementation("org.springframework.hateoas:spring-hateoas")
+	implementation("org.springframework:spring-webflux")
+	implementation("io.projectreactor.netty:reactor-netty")
+
+	implementation("org.springframework.boot:spring-boot-starter-aop")
+	implementation("org.springframework.boot:spring-boot-starter-jdbc")
+	implementation("org.springframework:spring-aspects")
+
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+	implementation 'org.springframework.boot:spring-boot-configuration-processor'
+}
+
+artifacts {
+	cycloneDxReport(layout.buildDirectory.file("reports/cyclonedx-server-${version}.xml")) {
+		builtBy('cyclonedxBom')
+	}
+}
+
+cyclonedxBom {
+	// includeConfigs is the list of configuration names to include when generating the BOM (leave empty to include every configuration)
+	includeConfigs = ["productionRuntimeClasspath"]
+	// Specified the type of project being built. Defaults to 'library'
+	projectType = "application"
+	// Specified the version of the CycloneDX specification to use. Defaults to '1.5'
+	schemaVersion = '1.5'
+	// Boms destination directory. Defaults to 'build/reports'
+	destination = file("build/reports")
+	// The file name for the generated BOMs (before the file format suffix). Defaults to 'bom'
+	outputName = "cyclonedx-server-${version}"
+	// The file format generated, can be xml, json or all for generating both. Defaults to 'all'
+	outputFormat = "xml"
+	// Exclude BOM Serial Number. Defaults to 'true'
+	includeBomSerialNumber = false
+	// Exclude License Text. Defaults to 'true'
+	includeLicenseText = false
+}

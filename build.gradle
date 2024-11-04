@@ -1,0 +1,30 @@
+plugins {
+	id 'base'
+}
+
+// CVE-2024-38816 + https://github.com/gradle/gradle/issues/9160
+class SpringBomAlignmentRule implements ComponentMetadataRule {
+	void execute(ComponentMetadataContext ctx) {
+		ctx.details.with {
+			if (id.group.startsWith("org.springframework")) {
+				// https://github.com/CycloneDX/cyclonedx-gradle-plugin/issues/528
+				//if (id.name != "spring-framework-bom") {
+					belongsTo("org.springframework:spring-framework-bom:6.1.14", false)
+				//}
+			}
+		}
+	}
+}
+
+subprojects {
+	pluginManager.withPlugin("java") {
+		java {
+			withSourcesJar()
+			sourceCompatibility = JavaLanguageVersion.of("${javaSourceCompatibility}")
+			targetCompatibility = JavaLanguageVersion.of("${javaTargetCompatibility}")
+		}
+		dependencies {
+			components.all(SpringBomAlignmentRule)
+		}
+	}
+}

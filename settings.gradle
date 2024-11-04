@@ -1,0 +1,6 @@
+file('.').eachDir { sub ->
+	File buildFile = new File(sub, "build.gradle")
+	if (buildFile.exists()) {
+		include sub.name
+	}
+}

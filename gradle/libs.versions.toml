@@ -1,0 +1,12 @@
+[plugins]
+spring-boot = { id = "org.springframework.boot", version = "3.3.3" }
+exec = { id = 'com.github.psxpaul.execfork', version = "0.2.2" }
+docker-compose = { id = 'com.avast.gradle.docker-compose', version = "0.17.8" }
+docker = { id = 'com.bmuschko.docker-remote-api', version = "9.4.0" }
+report-license = { id = "com.github.hierynomus.license-report", version = "0.16.1" }
+sonarqube = { id = 'org.sonarqube', version = "5.1.0.4882" }
+cyclonedx = { id = 'org.cyclonedx.bom', version = "1.8.2" }
+spotless = { id = "com.diffplug.spotless", version = "6.25.0" }
+dep-conflict-detection = { id = "org.gradlex.jvm-dependency-conflict-detection", version = "2.1.2" }
+dep-conflict-resolution = { id = "org.gradlex.jvm-dependency-conflict-resolution", version = "2.1.2" }
+test-javaagent = { id = "com.ryandens.javaagent-test", version = "0.5.2" }
